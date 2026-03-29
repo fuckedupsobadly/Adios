@@ -60,20 +60,6 @@ If retraining, your CSV must have these columns:
 
 ---
 
-## Usage in Code
-
-```python
-from sentence_predictor import analyze_case
-
-analyze_case({
-    "crime_type": "theft",
-    "severity": 3,
-    "prior_convictions": 1,
-    "age": 30,
-    "employment_status": "employed",
-    "has_dependents": 1
-})
-```
 
 ### Example output
 
