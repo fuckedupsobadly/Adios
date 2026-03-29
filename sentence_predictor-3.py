@@ -1,12 +1,9 @@
-"""
-Sentence Length Predictor — loads a pretrained model, no retraining needed.
-Make sure sentence_model.pkl is in the same folder as this script.
-"""
+
 
 import pickle
 import pandas as pd
 
-# ── Load pretrained model ────────────────────────────────────────────────────
+
 with open("sentence_model.pkl", "rb") as f:
     saved = pickle.load(f)
 
@@ -18,7 +15,7 @@ preprocessor = model.named_steps["preprocessing"]
 print("Model loaded successfully")
 
 
-# ── Analysis function ────────────────────────────────────────────────────────
+
 def analyze_case(new_case_dict):
     """
     Predict sentence length and show similar cases + bias insight.
@@ -55,13 +52,13 @@ def analyze_case(new_case_dict):
     print(f"    {bias_msg}")
 
 
-# ── Terminal input ────────────────────────────────────────────────────────────
+
 if __name__ == "__main__":
     print("\n─────────────────────────────────────")
     print("   Sentence Length Predictor (KZ)")
     print("─────────────────────────────────────")
 
-    # Crime type — must match training data
+   
     valid_crimes = ["theft", "fraud", "assault", "robbery"]
     while True:
         crime_type = input(f"\nCrime type ({' / '.join(valid_crimes)}): ").strip().lower()
@@ -69,7 +66,7 @@ if __name__ == "__main__":
             break
         print(f"  Please enter one of: {', '.join(valid_crimes)}")
 
-    # Severity 1–5
+    
     while True:
         try:
             severity = int(input("Severity score (1-5): "))
@@ -79,7 +76,7 @@ if __name__ == "__main__":
         except ValueError:
             print("  Please enter a whole number.")
 
-    # Prior convictions
+    
     while True:
         try:
             prior_convictions = int(input("Prior convictions (0, 1, 2, ...): "))
@@ -89,7 +86,7 @@ if __name__ == "__main__":
         except ValueError:
             print("  Please enter a whole number.")
 
-    # Age
+    
     while True:
         try:
             age = int(input("Defendant age (18-60): "))
@@ -99,7 +96,7 @@ if __name__ == "__main__":
         except ValueError:
             print("  Please enter a whole number.")
 
-    # Employment status — 3 valid values
+    
     valid_employment = ["employed", "unemployed", "student"]
     while True:
         employment_status = input(f"Employment status ({' / '.join(valid_employment)}): ").strip().lower()
@@ -107,7 +104,7 @@ if __name__ == "__main__":
             break
         print(f"  Please enter one of: {', '.join(valid_employment)}")
 
-    # Dependents
+    
     while True:
         has_dependents_input = input("Has dependents? (yes / no): ").strip().lower()
         if has_dependents_input in ("yes", "no"):
