@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
+    { "source": "/", "destination": "https://sentence-predictor-api.onrender.com/" },
     { "source": "/:path*", "destination": "https://sentence-predictor-api.onrender.com/:path*" }
   ]
 }
