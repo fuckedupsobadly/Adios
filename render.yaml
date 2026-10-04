@@ -4,6 +4,7 @@ services:
     name: sentence-predictor-api
     runtime: python
     plan: free
+    region: frankfurt
     branch: deploy
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
