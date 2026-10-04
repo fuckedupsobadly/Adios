@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Predict{% endblock %}
+{% block body %}
+<div class="container">
+  <h1>Sentence prediction</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alerts">
+        {% for cat, msg in messages %}
+          <div class="alert alert-{{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('predict') }}">
+
+    <div class="field">
+      <label>Crime type</label>
+      <select name="crime_type" required>
+        <option value="" disabled selected>Select</option>
+        {% for c in valid_crimes %}
+          <option value="{{ c }}" {% if request.form.get('crime_type') == c %}selected{% endif %}>
+            {{ c|capitalize }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Severity</label>
+      <div class="radio-group">
+        {% for i in range(1, 6) %}
+          <input type="radio" name="severity" id="sev{{ i }}" value="{{ i }}"
+            {% if request.form.get('severity', '3') == i|string %}checked{% endif %}>
+          <label for="sev{{ i }}">{{ i }}</label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Prior convictions</label>
+      <input type="number" name="prior_convictions" min="0" max="20"
+        value="{{ request.form.get('prior_convictions', 0) }}" required>
+    </div>
+
+    <div class="field">
+      <label>Age</label>
+      <input type="number" name="age" min="18" max="60"
+        value="{{ request.form.get('age', '') }}" placeholder="18–60" required>
+    </div>
+
+    <div class="field">
+      <label>Employment status</label>
+      <select name="employment_status" required>
+        <option value="" disabled selected>Select</option>
+        {% for e in valid_employment %}
+          <option value="{{ e }}" {% if request.form.get('employment_status') == e %}selected{% endif %}>
+            {{ e|capitalize }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Has dependents</label>
+      <div class="radio-group">
+        <input type="radio" name="has_dependents" id="dep_no" value="0"
+          {% if request.form.get('has_dependents', '0') == '0' %}checked{% endif %}>
+        <label for="dep_no">No</label>
+        <input type="radio" name="has_dependents" id="dep_yes" value="1"
+          {% if request.form.get('has_dependents') == '1' %}checked{% endif %}>
+        <label for="dep_yes">Yes</label>
+      </div>
+    </div>
+
+    <button class="btn" type="submit">Run prediction</button>
+  </form>
+
+  {% if result %}
+  <div class="result">
+    <div class="result-number">{{ result.predicted }}</div>
+    <div class="result-unit">years · predicted sentence</div>
+
+    <div class="result-grid">
+      <div class="result-block">
+        <div class="result-block-label">Similar cases</div>
+        {% for case in result.similar_cases %}
+          <div class="similar-item">
+            <span>{{ case.crime_type|capitalize }}</span>
+            <span class="mono">{{ case.sentence_length }} yr</span>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="result-block">
+        <div class="result-block-label">Deviation from similar</div>
+        <div style="padding: 0.4rem 0;">
+          <span class="badge badge-{{ result.deviation_label|lower }}">
+            {{ result.deviation_label }}
+          </span>
+        </div>
+
+        <div class="result-block-label" style="margin-top:1.25rem;">Bias — dependents</div>
+        <div class="bias-row">
+          <span>No dependents</span>
+          <span class="bias-val">{{ result.avg_no_dependents }} yr</span>
+        </div>
+        <div class="bias-row">
+          <span>Has dependents</span>
+          <span class="bias-val">{{ result.avg_has_dependents }} yr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

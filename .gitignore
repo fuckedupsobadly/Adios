@@ -1,0 +1,6 @@
+__pycache__/
+*.db
+.vercel/
+.pytest_cache/
+# Contains a hardcoded Gmail App Password: never commit
+Sentence_Predictor_Documentation.pdf

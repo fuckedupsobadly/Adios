@@ -1,0 +1,21 @@
+# Render Blueprint for the Flask backend (New -> Blueprint in the Render dashboard).
+services:
+  - type: web
+    name: sentence-predictor-api
+    runtime: python
+    plan: free
+    branch: deploy
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+    healthCheckPath: /login
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.4
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL        # Neon connection string, pasted in the dashboard
+        sync: false
+      - key: MAIL_USERNAME       # optional: Gmail address for password-reset emails
+        sync: false
+      - key: MAIL_PASSWORD       # optional: a NEW Gmail App Password
+        sync: false

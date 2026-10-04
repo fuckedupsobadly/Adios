@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+{% block body %}
+<div class="container">
+  <h1>Prediction history</h1>
+
+  {% if predictions %}
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Crime</th>
+        <th>Severity</th>
+        <th>Age</th>
+        <th>Result</th>
+        <th>Deviation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in predictions %}
+      <tr>
+        <td class="mono" style="color:#888; white-space:nowrap;">
+          {{ p.created_at.strftime('%d %b %Y') }}
+        </td>
+        <td>{{ p.crime_type|capitalize }}</td>
+        <td>{{ p.severity }}</td>
+        <td>{{ p.age }}</td>
+        <td class="mono">{{ p.predicted_sentence }} yr</td>
+        <td>
+          <span class="badge badge-{{ p.deviation_label|lower }}">
+            {{ p.deviation_label }}
+          </span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="empty">No predictions yet. <a href="{{ url_for('predict') }}" style="color:inherit;text-decoration:underline;">Run one.</a></div>
+  {% endif %}
+</div>
+{% endblock %}

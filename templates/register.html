@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block body %}
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="auth-title">SENTENCE_PREDICTOR / KZ</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for cat, msg in messages %}
+            <div class="alert alert-{{ cat }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="field">
+      <label>Email</label>
+      <input type="email" name="email" form="reg-form" autocomplete="email" required>
+    </div>
+    <div class="field">
+      <label>Password <span style="color:#bbb">(min 8 chars)</span></label>
+      <input type="password" name="password" form="reg-form" autocomplete="new-password" required>
+    </div>
+    <div class="field">
+      <label>Confirm password</label>
+      <input type="password" name="confirm_password" form="reg-form" autocomplete="new-password" required>
+    </div>
+    <button class="btn" form="reg-form" type="submit" style="width:100%">Create account</button>
+
+    <form id="reg-form" method="POST" action="{{ url_for('register') }}" style="display:none"></form>
+
+    <div class="auth-footer">
+      <a href="{{ url_for('login') }}">Already have an account?</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
