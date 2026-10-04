@@ -249,7 +249,7 @@ def predict():
         prior_convictions = request.form.get("prior_convictions")
         age = request.form.get("age")
         employment_status = request.form.get("employment_status")
-        has_dependents = int(request.form.get("has_dependents", 0))
+        has_dependents = request.form.get("has_dependents", "0")
 
         errors = []
         if crime_type not in valid_crimes:
@@ -274,6 +274,10 @@ def predict():
             errors.append("Age must be 18–60.")
         if employment_status not in valid_employment:
             errors.append("Invalid employment status.")
+        if has_dependents in ("0", "1"):
+            has_dependents = int(has_dependents)
+        else:
+            errors.append("Has dependents must be Yes or No.")
 
         if errors:
             for e in errors:
