@@ -262,10 +262,10 @@ def predict():
             errors.append("Severity must be 1–5.")
         try:
             prior_convictions = int(prior_convictions)
-            if prior_convictions < 0:
+            if not 0 <= prior_convictions <= 20:
                 raise ValueError
         except (TypeError, ValueError):
-            errors.append("Prior convictions must be 0 or more.")
+            errors.append("Prior convictions must be 0–20.")
         try:
             age = int(age)
             if not 18 <= age <= 60:

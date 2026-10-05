@@ -1,6 +1,6 @@
 # Black box tests for the Predict page
 # Test 1: Age (must be 18 to 60)
-# Test 2: Prior convictions (must be a whole number, 0 or more)
+# Test 2: Prior convictions (must be a whole number from 0 to 20)
 # Test 3: Has dependents (must be Yes or No)
 
 import re
@@ -54,7 +54,7 @@ def test_2_2_extreme_prior_convictions(logged_in_client):
 def test_2_3_erroneous_prior_convictions(logged_in_client):
     prediction, errors = send_form(logged_in_client, prior_convictions="two")
     assert prediction is None
-    assert errors == ["Prior convictions must be 0 or more."]
+    assert errors == ["Prior convictions must be 0–20."]
 
 
 # Test 3 - Has dependents
