@@ -16,7 +16,7 @@ services:
         generateValue: true
       - key: DATABASE_URL        # Neon connection string, pasted in the dashboard
         sync: false
-      - key: MAIL_USERNAME       # optional: Gmail address for password-reset emails
+      - key: MAIL_USERNAME       # sender of password-reset emails: the address verified in Brevo
         sync: false
-      - key: MAIL_PASSWORD       # optional: a NEW Gmail App Password
+      - key: BREVO_API_KEY       # Brevo API key (free plan blocks SMTP, so mail goes over HTTPS)
         sync: false
