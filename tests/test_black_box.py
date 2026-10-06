@@ -1,11 +1,11 @@
 # Black box tests for the Predict page
-# Test 1: Age (must be 18 to 60)
+# Test 1: Defendant IIN (must be exactly 12 digits)
 # Test 2: Prior convictions (must be a whole number from 0 to 20)
 # Test 3: Has dependents (must be Yes or No)
 
 import re
 
-normal_case = {"crime_type": "theft", "severity": "3", "prior_convictions": "1",
+normal_case = {"iin": "040512500123", "crime_type": "theft", "severity": "3", "prior_convictions": "1",
                "age": "30", "employment_status": "employed", "has_dependents": "0"}
 
 
@@ -21,22 +21,22 @@ def send_form(client, **changes):
     return prediction, errors
 
 
-# Test 1 - Age
+# Test 1 - Defendant IIN
 
-def test_1_1_normal_age(logged_in_client):
-    prediction, errors = send_form(logged_in_client, age="35")
+def test_1_1_normal_iin(logged_in_client):
+    prediction, errors = send_form(logged_in_client, iin="040512500123")
     assert prediction is not None and errors == []
 
 
-def test_1_2_extreme_age(logged_in_client):
-    prediction, errors = send_form(logged_in_client, age="60")
+def test_1_2_extreme_iin(logged_in_client):
+    prediction, errors = send_form(logged_in_client, iin="000000000001")
     assert prediction is not None and errors == []
 
 
-def test_1_3_erroneous_age(logged_in_client):
-    prediction, errors = send_form(logged_in_client, age="75")
+def test_1_3_erroneous_iin(logged_in_client):
+    prediction, errors = send_form(logged_in_client, iin="04051250")
     assert prediction is None
-    assert errors == ["Age must be 18–60."]
+    assert errors == ["IIN must be 12 digits."]
 
 
 # Test 2 - Prior convictions

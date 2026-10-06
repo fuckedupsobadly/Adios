@@ -236,6 +236,12 @@ def reset_password(token):
     return render_template("reset_password.html", token=token)
 
 
+def validate_iin(iin):
+    # Defendant IIN must be exactly 12 digits. The IIN is only checked:
+    # it is not used by the model and it is not saved.
+    return iin is not None and len(iin) == 12 and iin.isdigit()
+
+
 @app.route("/predict", methods=["GET", "POST"])
 @login_required
 def predict():
@@ -244,6 +250,7 @@ def predict():
     valid_employment = ["employed", "unemployed", "student"]
 
     if request.method == "POST":
+        iin = request.form.get("iin")
         crime_type = request.form.get("crime_type")
         severity = request.form.get("severity")
         prior_convictions = request.form.get("prior_convictions")
@@ -252,6 +259,8 @@ def predict():
         has_dependents = request.form.get("has_dependents", "0")
 
         errors = []
+        if not validate_iin(iin):
+            errors.append("IIN must be 12 digits.")
         if crime_type not in valid_crimes:
             errors.append("Invalid crime type.")
         try:
